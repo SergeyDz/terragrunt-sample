@@ -24,7 +24,7 @@ generate "provider" {
   path      = "_global_provider.tf"
   if_exists = "overwrite_terragrunt"
   contents  = <<EOF
-provider "azurerm" {
+provider "aws" {
   features {}
 }
 EOF
