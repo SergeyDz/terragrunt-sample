@@ -9,6 +9,24 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+variables:
+  GitVersion.SemVer: ''
+
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: UseGitVersion@5
+  displayName: gitversion
+  inputs:
+    versionSpec: '5.x'
+    updateAssemblyInfo: false
+
+- task: CopyFiles@2
+  displayName: 'Copy files to: $(Build.ArtifactStagingDirectory)/'
+  inputs:
+    SourceFolder: $(System.DefaultWorkingDirectory)/
+    TargetFolder: $(Build.ArtifactStagingDirectory)/
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: terragrunt-sample'
+  inputs:
+    PathtoPublish: $(Build.ArtifactStagingDirectory)/
+    ArtifactName: terragrunt-sample
